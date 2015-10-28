@@ -27,7 +27,8 @@ def comparefile(comparefile1, records0):
     
     for word in comparefile1['word']:
         if ' ' in word:
-            comparefile1['sentence'][comparefile1['word']==word]=1
+            #comparefile1.sentence[comparefile1['word']==word]=1
+            comparefile1.loc[comparefile1['word']==word, 'sentence']=1
 
     comparefile_sort = comparefile1.sort_index(by = 'sentence', ascending = False)
 
@@ -37,18 +38,20 @@ def comparefile(comparefile1, records0):
     affinity_one_word = comparefile_one_word.affinity
     
     for j in range(len(df1)):
-        text = df1['text'][j].split(' ')
+        text = df1.text[j].split(' ')
         for word in text:
             if (comparefile_one_word.word==word.lower()).any():
-                df1['score'][j]+= affinity_one_word[comparefile_one_word.word==word.lower()]
+                df1.score[j]+= affinity_one_word[comparefile_one_word.word==word.lower()]
+                #df1.ix[j, 'score']+= affinity_one_word[comparefile_one_word.word==word.lower()]
             
         
 
     for j in range(len(df1)):
-        text = df1['text'][j].split(' ')
+        text = df1.text[j].split(' ')
         for k in range(len(text)-1):
             if (comparefile_two_word.word==(text[k].lower()+' '+text[k+1]).lower()).any():
-                df1['score'][j]+= affinity_two_word[(comparefile_two_word.word==(text[k].lower()+' '+text[k+1].lower()))]
+                df1.score[j]+= affinity_two_word[(comparefile_two_word.word==(text[k].lower()+' '+text[k+1].lower()))]
+                #Df1.ix[j, 'score']+= affinity_two_word[(comparefile_two_word.word==(text[k].lower()+' '+text[k+1].lower()))]
     
     return df1
 
