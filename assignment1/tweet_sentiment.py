@@ -61,14 +61,24 @@ def comparefile(comparefile1, records0):
 def main():
     sent_file = open(sys.argv[1])
     tweet_file = open(sys.argv[2])
+#    lines(sent_file)
+#    lines(tweet_file)
     records = [json.loads(line) for line in tweet_file]
     columns=['word', 'affinity']
     comfile1 = pd.read_table(sent_file, sep='\t', names = columns)
     hw()
-    lines(sent_file)
-    lines(tweet_file)
+
     df2 = comparefile(comfile1, records)
     print(df2.score[:10])
+    temp = sys.stdout #store original stdout object for later
+    sys.stdout = open('log1.txt','w') #redirect all prints to this log file
+#    print("testing123") #nothing appears at interactive prompt
+    for score in df2.score:
+        print(score)
+   
+
+    sys.stdout = temp #restore print commands to interactive prompt
+    print("back to normal") #this shows up in the interactive prompt
 
 
 
